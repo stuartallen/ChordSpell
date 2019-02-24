@@ -7,9 +7,11 @@ public class ChordAndTab {
 	private final String[] cMajor = {"C","D","E","F","G","A","B"};
 	private final String[] triad = {"2","4"};
 	private final String[] dimTriad = {"2","4b"};
-	private final String[] allNotes = {"Cb","C","C#","Db","D","D#","Eb","E","E#","Fb","F","F#","Gb","G","G#","Ab","A","A#","Bb","B","B#"};
+	//private final String[] allNotes = {"Cb","C","C#","Db","D","D#","Eb","E","E#","Fb","F","F#","Gb","G","G#","Ab","A","A#","Bb","B","B#"};
 	
-	//feilds
+	public static final String[] standard = {"E","A","D","G","B","E"};
+	
+	// fields
 	private String[] tuning;
 	private String chord;
 	
@@ -18,11 +20,14 @@ public class ChordAndTab {
 		this.chord = chord;
 	}
 	
+	// FIXME change name to be more appropriate  getTab?  getChord?
+	// FIXME make into separate chord/tab calls.
 	public String processInput() {
+		// TODO split this into smaller chunks
 		String[] tuning = this.tuning;
 		String input = this.chord;
 		//get tonic
-		ArrayList<String> notes = new ArrayList();
+		ArrayList<String> notes = new ArrayList<String>();
 		notes.add("0");
 		int[] keySig = majorKeySteps;
 		String tonic;
@@ -254,6 +259,7 @@ public class ChordAndTab {
 		return chord;
 	}
 	
+	// TODO consider making TAB or CHORD classes.
 	private int tabOneString(String open, String note) {
 		int tab = findNoteNum(note) - findNoteNum(open);
 		tab += 12;

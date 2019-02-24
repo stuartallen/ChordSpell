@@ -15,10 +15,11 @@ public class ChordSpell {
 	//this is for testing purposes only
 	public static final String[] allNotes = {"Cb","C","C#","Db","D","D#","Eb","E","E#","Fb","F","F#","Gb","G","G#","Ab","A","A#","Bb","B","B#"};
 	//tunings
-	public static final String[] standard = {"E","A","D","G","B","E"};
 	
+	// TODO remove all old stuff from ChordSpell
+	// TODO add JUnit test for regression prevention
 	public static void main(String[] args) {
-		ChordAndTab newChord = new ChordAndTab(standard, "A9b");
+		ChordAndTab newChord = new ChordAndTab(ChordAndTab.standard, "A9b");
 		System.out.println(newChord.processInput());
 	}
 	
