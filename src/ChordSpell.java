@@ -20,9 +20,11 @@ public class ChordSpell {
 	// TODO add JUnit test for regression prevention
 	public static void main(String[] args) {
 		ChordAndTab newChord = new ChordAndTab(ChordAndTab.standard, "A9b");
-		System.out.println(newChord.processInput());
+		System.out.println(newChord.getTab());
+		System.out.println(newChord.getChord());
 	}
 	
+	/**
 	public static String processInput(String[] tuning, String input) {
 		//get tonic
 		ArrayList<String> notes = new ArrayList();
@@ -222,7 +224,6 @@ public class ChordSpell {
 		}
 		return chord;
 	}
-	**/
 	
 	public static String interval(String root, int[] tonic, String interval) {
 		int flatCount = -1;
@@ -295,5 +296,7 @@ public class ChordSpell {
 			tab.add(place);
 		}
 		return notes + "\n" + tab;
+		
 	}
+	**/
 }
