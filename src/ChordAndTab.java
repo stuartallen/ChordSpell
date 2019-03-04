@@ -16,21 +16,24 @@ public class ChordAndTab {
 	private String[] tuning;
 	private String chord;
 
+	//constructor
 	public ChordAndTab(String[] tuning, String chord) {
 		this.tuning = tuning;
 		this.chord = chord;
 	}
 
+	//returns the chord specific to the object
 	public ArrayList<String> getChord() {
 		return Chord(splitChordName()[0], getKey(), getQuality());
 	}
 
+	//spells any chord
+	//intervals come from getQuality
 	private ArrayList<String> Chord(String root, int[] tonic, String[] intervals) {
 		ArrayList<String> chord = new ArrayList<String>();
 		for (String interval : intervals) {
 			String letter;
 			// makes exception for seventh chords
-			// System.out.println(Integer.parseInt(interval.substring(0,1)));
 			if (Integer.parseInt(interval.substring(0, 1)) == 6) {
 				if (interval.contains("^")) {
 					letter = interval(root, majorKeySteps, "6");
@@ -45,11 +48,13 @@ public class ChordAndTab {
 		return chord;
 	}
 
+	//returns the tab specific to the object
 	public String getTab() {
 		String[] tuning = this.tuning;
 		return tab(tuning, getChord());
 	}
 
+	//splits the chord name into a root and quality
 	private String[] splitChordName() {
 		String input = this.chord;
 		String tonic = getRoot();
@@ -58,6 +63,7 @@ public class ChordAndTab {
 		return answer;
 	}
 
+	//finds the root of the chord so splitChordName can split it up
 	private String getRoot() {
 		String input = this.chord;
 		if (input.length() > 1 && (input.substring(1, 2).equals("#") || input.substring(1, 2).equals("b"))) {
@@ -68,6 +74,7 @@ public class ChordAndTab {
 		return input;
 	}
 
+	//returns the list of notes chord will use to spell the chord
 	private String[] getQuality() {
 		String quality = splitChordName()[1];
 		// represents if a seventh has been spelt (sometimes 7s are implied)
@@ -95,6 +102,9 @@ public class ChordAndTab {
 				notes.add("6b");
 			}
 			svnSplt = true;
+		}
+		if(quality.equals("") || quality.equals("-")) {
+			return finalNotes(notes);
 		}
 		for (int i = 7; i <= 13; i++) {
 			// must have i
@@ -124,6 +134,11 @@ public class ChordAndTab {
 			}
 		}
 		// notes needs to be a string list
+		return finalNotes(notes);
+	}
+	
+	//puts notes from get quality into an acceptable form of String[] not ArrayList<String>
+	private String[] finalNotes(ArrayList<String> notes) {
 		String[] finalNotes = new String[notes.size()];
 		for (int i = 0; i < notes.size(); i++) {
 			finalNotes[i] = notes.get(i);
@@ -131,6 +146,7 @@ public class ChordAndTab {
 		return finalNotes;
 	}
 
+	//finds if the key is major or minor
 	private int[] getKey() {
 		String quality = splitChordName()[1];
 		int[] keySig = majorKeySteps;
@@ -144,6 +160,7 @@ public class ChordAndTab {
 		return keySig;
 	}
 
+	//finds note in relation to C (always positive)
 	private int findNoteNum(String note) {
 		int sum = 0;
 		boolean found = false;
@@ -175,8 +192,9 @@ public class ChordAndTab {
 		return sum;
 	}
 
-	private ArrayList keyNoSharpsFlats(String root) {
-		ArrayList notes = new ArrayList();
+	//Spells the key without sharps or flats (as a certain mode of the major scale)
+	private ArrayList<String> keyNoSharpsFlats(String root) {
+		ArrayList<String> notes = new ArrayList<String>();
 		int start = 0;
 		for (int i = 0; i < cMajor.length; i++) {
 			if (root.substring(0, 1).equals(cMajor[i])) {
@@ -192,8 +210,9 @@ public class ChordAndTab {
 		return notes;
 	}
 
-	private ArrayList keyNums(String root, int[] tonic) {
-		ArrayList noteNums = new ArrayList();
+	// has the key spelled correctly IN TERMS OF NUMBERS not notes
+	private ArrayList<Integer> keyNums(String root, int[] tonic) {
+		ArrayList<Integer> noteNums = new ArrayList<Integer>();
 		int rootNum = findNoteNum(root);
 		for (int i = 0; i < tonic.length; i++) {
 			int lastDigit;
@@ -209,21 +228,19 @@ public class ChordAndTab {
 		return noteNums;
 	}
 
-	private ArrayList key(String root, int[] tonic) {
+	//spells each key
+	private ArrayList<String> key(String root, int[] tonic) {
 		// letterNotes starts with no sharps or flats
-		ArrayList letterNotes = keyNoSharpsFlats(root);
-		ArrayList trueNums = keyNums(root, tonic);
-		ArrayList changeNums = new ArrayList();
+		ArrayList<String> letterNotes = keyNoSharpsFlats(root);
+		ArrayList<Integer> trueNums = keyNums(root, tonic);
+		ArrayList<Integer> changeNums = new ArrayList<Integer>();
 		// Makes changeNums a list of all the notes in the scale without #s or bs but in
 		// number form
 		for (int i = 0; i < letterNotes.size(); i++) {
-			// System.out.print(letterNotes.get(i));
 			String note = (String) letterNotes.get(i);
 			int untrueNum = findNoteNum(note);
 			changeNums.add(untrueNum);
 		}
-		// System.out.println(trueNums);
-		// System.out.println(changeNums);
 		for (int i = 0; i < changeNums.size(); i++) {
 			while (changeNums.get(i) != trueNums.get(i)) {
 				// System.out.println(i);
@@ -245,15 +262,14 @@ public class ChordAndTab {
 				}
 			}
 		}
-		// System.out.println(trueNums);
-		// System.out.println(changeNums);
 		return letterNotes;
 	}
 
+	//takes each interval from a key and adds sharps or flats if need be
 	private String interval(String root, int[] tonic, String interval) {
 		int flatCount = -1;
 		int sharpCount = -1;
-		ArrayList key = key(root, tonic);
+		ArrayList<String> key = key(root, tonic);
 		while (interval.contains("b")) {
 			interval = interval.substring(0, interval.length() - 1);
 			flatCount++;
@@ -281,7 +297,7 @@ public class ChordAndTab {
 		return finalInterval;
 	}
 
-	// TODO consider making TAB or CHORD classes.
+	// finds tab for one string
 	private int tabOneString(String open, String note) {
 		int tab = findNoteNum(note) - findNoteNum(open);
 		tab += 12;
@@ -289,11 +305,12 @@ public class ChordAndTab {
 		return tab;
 	}
 
-	private String tab(String[] tuning, ArrayList notes) {
-		ArrayList tab = new ArrayList();
+	//finds tab for all strings
+	private String tab(String[] tuning, ArrayList<String> notes) {
+		ArrayList<ArrayList<Integer>> tab = new ArrayList<ArrayList<Integer>>();
 		for (int i = 0; i < tuning.length; i++) {
 			// I would have called places strings but that would have been very confusing
-			ArrayList place = new ArrayList();
+			ArrayList<Integer> place = new ArrayList<Integer>();
 			// System.out.println(tuning[i]);
 			for (int j = 0; j < notes.size(); j++) {
 				place.add(tabOneString(tuning[i], (String) notes.get(j)));
