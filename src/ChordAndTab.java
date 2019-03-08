@@ -7,10 +7,10 @@ public class ChordAndTab {
 	private final String[] cMajor = { "C", "D", "E", "F", "G", "A", "B" };
 	private final String[] triad = { "2", "4" };
 	private final String[] dimTriad = { "2", "4b" };
-	// private final String[] allNotes =
-	// {"Cb","C","C#","Db","D","D#","Eb","E","E#","Fb","F","F#","Gb","G","G#","Ab","A","A#","Bb","B","B#"};
 
 	public static final String[] standard = { "E", "A", "D", "G", "B", "E" };
+	public static final String[] dropD = { "D", "A", "D", "G", "B", "E" };
+	public static final String[] dadgad = { "D", "A", "D", "G", "A", "D" };
 
 	// fields
 	private String[] tuning;
@@ -49,15 +49,18 @@ public class ChordAndTab {
 	}
 
 	//returns the tab specific to the object
-	public String getTab() {
+	public ArrayList<ArrayList<Integer>> getTab() {
 		String[] tuning = this.tuning;
 		return tab(tuning, getChord());
 	}
+	 public String[] getTuning() {
+		 return this.tuning;
+	 }
 
 	//splits the chord name into a root and quality
 	private String[] splitChordName() {
 		String input = this.chord;
-		String tonic = getRoot();
+		String tonic = getRoot().toUpperCase();
 		String quality = input.substring(tonic.length(), input.length());
 		String[] answer = { tonic, quality };
 		return answer;
@@ -306,7 +309,7 @@ public class ChordAndTab {
 	}
 
 	//finds tab for all strings
-	private String tab(String[] tuning, ArrayList<String> notes) {
+	private ArrayList<ArrayList<Integer>> tab(String[] tuning, ArrayList<String> notes) {
 		ArrayList<ArrayList<Integer>> tab = new ArrayList<ArrayList<Integer>>();
 		for (int i = 0; i < tuning.length; i++) {
 			// I would have called places strings but that would have been very confusing
@@ -318,6 +321,6 @@ public class ChordAndTab {
 			// System.out.println(place);
 			tab.add(place);
 		}
-		return tab + "";
+		return tab;
 	}
 }

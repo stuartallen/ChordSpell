@@ -8,9 +8,8 @@ class ChordAndTabTest {
 	void testProcessInput() {
 		ChordAndTab newChord = new ChordAndTab(ChordAndTab.standard, "A9b");
 		assertEquals(
-				"[A, C#, E, G, Bb]\n" + 
 				"[[5, 9, 0, 3, 6], [0, 4, 7, 10, 1], [7, 11, 2, 5, 8], [2, 6, 9, 0, 3], [10, 2, 5, 8, 11], [5, 9, 0, 3, 6]]", 
-				newChord.getTab()
+				newChord.getTab().toString()
 				);
 	}
 

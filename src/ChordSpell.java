@@ -19,7 +19,7 @@ public class ChordSpell {
 	// TODO remove all old stuff from ChordSpell
 	// TODO add JUnit test for regression prevention
 	public static void main(String[] args) {
-		ChordAndTab newChord = new ChordAndTab(ChordAndTab.standard, "C79b13#");
+		ChordAndTab newChord = new ChordAndTab(ChordAndTab.dadgad, "c");
 		System.out.println(newChord.getTab());
 		System.out.println(newChord.getChord());
 	}
